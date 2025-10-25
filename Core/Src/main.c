@@ -21,7 +21,6 @@
 #include "i2c.h"
 #include "lcd.h"
 #include "sai.h"
-#include "spi.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -93,7 +92,6 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_SAI1_Init();
-  MX_SPI2_Init();
   MX_TIM1_Init();
   MX_LCD_Init();
   /* USER CODE BEGIN 2 */
