@@ -48,7 +48,20 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+#define CS43L22_I2C_ADDR  0x94  // Adres układu audio na I2C
 
+// Bufor z jedną pełną sinusoidą (ok. 160Hz przy próbkowaniu 16kHz)
+int16_t sine_wave[100] = {
+    0, 2057, 4067, 5985, 7765, 9368, 10760, 11909, 12796, 13404,
+    13728, 13768, 13525, 13002, 12206, 11150, 9849, 8320, 6592, 4697,
+    2673, 563, -1588, -3729, -5809, -7778, -9588, -11195, -12558, -13639,
+    -14408, -14846, -14948, -14713, -14146, -13260, -12076, -10620, -8923, -7025,
+    -4972, -2813, -597, 1625, 3804, 5887, 7824, 9568, 11078, 12318,
+    13260, 13889, 14197, 14182, 13847, 13197, 12242, 10998, 9489, 7747,
+    5812, 3731, 1555, -664, -2877, -5031, -7077, -8968, -10656, -12102,
+    -13274, -14143, -14691, -14909, -14792, -14339, -13557, -12466, -11097, -9492,
+    -7693, -5741, -3678, -1553, 579, 2664, 4648, 6483, 8128, 9548
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,7 +72,37 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
+    // 1. OBUDZENIE UKŁADU (HARDWARE RESET)
+    // Pin PE3 musi być w stanie WYSOKIM, żeby układ działał.
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
+    HAL_Delay(50); // Czekamy aż układ wstanie
 
+    uint8_t txData[2];
+
+    // 2. POWER ON (Rejestr 0x02 -> 0x9E)
+    txData[0] = 0x02;
+    txData[1] = 0x9E;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+
+    // 3. WŁĄCZENIE WYJŚCIA SŁUCHAWKOWEGO I SYGNAŁU (Rejestr 0x04 -> 0xAF)
+    txData[0] = 0x04;
+    txData[1] = 0xAF;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+
+    // 4. KONFIGURACJA ZEGARA (AUTO-DETECT) (Rejestr 0x05 -> 0x81)
+    txData[0] = 0x05;
+    txData[1] = 0x81;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+
+    // 5. USTAWIENIE GŁOŚNOŚCI (Rejestr 0x20 i 0x21 -> 0x18)
+    // Wartość 0x18 to przyzwoita głośność testowa. Max to 0x00 (+12dB), Min to 0xFF.
+    txData[0] = 0x20; txData[1] = 0x18; // Kanał A
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+
+    txData[0] = 0x21; txData[1] = 0x18; // Kanał B
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,7 +140,15 @@ int main(void)
   MX_TIM1_Init();
   MX_LCD_Init();
   /* USER CODE BEGIN 2 */
+  // Inicjalizujemy kodek audio (włączamy zasilanie na PE3 i konfigurujemy przez I2C)
+    CS43L22_Init(&hi2c1);
 
+    // Uruchamiamy wysyłanie danych sinusoidy przez SAI (DMA) w pętli (Circular)
+    // "sine_wave" to nasze dane, "100" to liczba próbek w tablicy
+    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)sine_wave, 100) != HAL_OK)
+    {
+        Error_Handler(); // Jeśli tu wejdzie, coś jest nie tak z zegarami SAI lub DMA
+    }
   /* USER CODE END 2 */
 
   /* Infinite loop */
