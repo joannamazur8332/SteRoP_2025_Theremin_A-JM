@@ -1,3 +1,4 @@
+"./Core/Src/czujnik.o"
 "./Core/Src/dma.o"
 "./Core/Src/gpio.o"
 "./Core/Src/i2c.o"
@@ -12,7 +13,6 @@
 "./Core/Src/tim.o"
 "./Core/Startup/startup_stm32l476vgtx.o"
 "./Drivers/BSP/stm32l476g_discovery.o"
-"./Drivers/BSP/stm32l476g_discovery_audio.o"
 "./Drivers/BSP/stm32l476g_discovery_glass_lcd.o"
 "./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o"
 "./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o"
