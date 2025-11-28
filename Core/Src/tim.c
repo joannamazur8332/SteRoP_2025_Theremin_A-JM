@@ -62,7 +62,7 @@ void MX_TIM1_Init(void)
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
   sConfigIC.ICFilter = 0;
-  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -86,7 +86,7 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
 
     __HAL_RCC_GPIOE_CLK_ENABLE();
     /**TIM1 GPIO Configuration
-    PE9     ------> TIM1_CH1
+    PE13     ------> TIM1_CH3
     */
     GPIO_InitStruct.Pin = ECHO_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -116,7 +116,7 @@ void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef* tim_icHandle)
     __HAL_RCC_TIM1_CLK_DISABLE();
 
     /**TIM1 GPIO Configuration
-    PE9     ------> TIM1_CH1
+    PE13     ------> TIM1_CH3
     */
     HAL_GPIO_DeInit(ECHO_GPIO_Port, ECHO_Pin);
 

@@ -23,11 +23,12 @@
 #include "lcd.h"
 #include "sai.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "czujnik.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +60,11 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int _write(int file, char *ptr, int len)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 50);
+    return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -96,8 +101,9 @@ int main(void)
   MX_SAI1_Init();
   MX_TIM1_Init();
   MX_LCD_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,7 +114,10 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
+	read_HCSR04();
 	HAL_Delay(200);
+	printf("Distance: %li\r\n", distance);
+
 
   }
   /* USER CODE END 3 */
