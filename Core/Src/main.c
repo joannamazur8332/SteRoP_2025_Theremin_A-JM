@@ -23,11 +23,12 @@
 #include "lcd.h"
 #include "sai.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "czujnik.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,6 +104,12 @@ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
     txData[0] = 0x21; txData[1] = 0x18; // Kanał B
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 }
+
+int _write(int file, char *ptr, int len)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 50);
+    return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -139,6 +146,7 @@ int main(void)
   MX_SAI1_Init();
   MX_TIM1_Init();
   MX_LCD_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   // Inicjalizujemy kodek audio (włączamy zasilanie na PE3 i konfigurujemy przez I2C)
     CS43L22_Init(&hi2c1);
@@ -149,6 +157,7 @@ int main(void)
     {
         Error_Handler(); // Jeśli tu wejdzie, coś jest nie tak z zegarami SAI lub DMA
     }
+  HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -159,7 +168,10 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
+	read_HCSR04();
 	HAL_Delay(200);
+	printf("Distance: %li\r\n", distance);
+
 
   }
   /* USER CODE END 3 */
