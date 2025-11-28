@@ -6,17 +6,26 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Drivers/BSP/stm32l476g_discovery.c \
+<<<<<<< HEAD
 ../Drivers/BSP/stm32l476g_discovery_audio.c \
+=======
+>>>>>>> main
 ../Drivers/BSP/stm32l476g_discovery_glass_lcd.c 
 
 OBJS += \
 ./Drivers/BSP/stm32l476g_discovery.o \
+<<<<<<< HEAD
 ./Drivers/BSP/stm32l476g_discovery_audio.o \
+=======
+>>>>>>> main
 ./Drivers/BSP/stm32l476g_discovery_glass_lcd.o 
 
 C_DEPS += \
 ./Drivers/BSP/stm32l476g_discovery.d \
+<<<<<<< HEAD
 ./Drivers/BSP/stm32l476g_discovery_audio.d \
+=======
+>>>>>>> main
 ./Drivers/BSP/stm32l476g_discovery_glass_lcd.d 
 
 
@@ -27,7 +36,11 @@ Drivers/BSP/%.o Drivers/BSP/%.su Drivers/BSP/%.cyclo: ../Drivers/BSP/%.c Drivers
 clean: clean-Drivers-2f-BSP
 
 clean-Drivers-2f-BSP:
+<<<<<<< HEAD
 	-$(RM) ./Drivers/BSP/stm32l476g_discovery.cyclo ./Drivers/BSP/stm32l476g_discovery.d ./Drivers/BSP/stm32l476g_discovery.o ./Drivers/BSP/stm32l476g_discovery.su ./Drivers/BSP/stm32l476g_discovery_audio.cyclo ./Drivers/BSP/stm32l476g_discovery_audio.d ./Drivers/BSP/stm32l476g_discovery_audio.o ./Drivers/BSP/stm32l476g_discovery_audio.su ./Drivers/BSP/stm32l476g_discovery_glass_lcd.cyclo ./Drivers/BSP/stm32l476g_discovery_glass_lcd.d ./Drivers/BSP/stm32l476g_discovery_glass_lcd.o ./Drivers/BSP/stm32l476g_discovery_glass_lcd.su
+=======
+	-$(RM) ./Drivers/BSP/stm32l476g_discovery.cyclo ./Drivers/BSP/stm32l476g_discovery.d ./Drivers/BSP/stm32l476g_discovery.o ./Drivers/BSP/stm32l476g_discovery.su ./Drivers/BSP/stm32l476g_discovery_glass_lcd.cyclo ./Drivers/BSP/stm32l476g_discovery_glass_lcd.d ./Drivers/BSP/stm32l476g_discovery_glass_lcd.o ./Drivers/BSP/stm32l476g_discovery_glass_lcd.su
+>>>>>>> main
 
 .PHONY: clean-Drivers-2f-BSP
 

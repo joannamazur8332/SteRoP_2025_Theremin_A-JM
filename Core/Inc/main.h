@@ -67,6 +67,8 @@ void Error_Handler(void);
 #define JOY_Up_GPIO_Port GPIOA
 #define JOY_Down_Pin GPIO_PIN_5
 #define JOY_Down_GPIO_Port GPIOA
+#define LD_G_Pin GPIO_PIN_8
+#define LD_G_GPIO_Port GPIOE
 #define ECHO_Pin GPIO_PIN_9
 #define ECHO_GPIO_Port GPIOE
 #define TRIG_Pin GPIO_PIN_2
