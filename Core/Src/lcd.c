@@ -22,6 +22,63 @@
 
 /* USER CODE BEGIN 0 */
 
+/*
+ * Mask_parts[0] zawiera ostatnie 4 bity (wysyłane na COM0)
+ * Mask_parts[3] zawiera pierwsze 4 bity  (wysyłane na COM3)
+ */
+uint32_t Mask_parts[4];
+
+
+const uint16_t LetterMap[8] =
+{
+  /* A       B       C       D       E       F       G       H*/
+  0xFE00, 0x6714, 0x1D00, 0x4714, 0x9D00, 0x9C00, 0x3F00, 0xFA00
+};
+
+
+
+
+
+void DisplayLetter(char znak)
+{
+  //HAL_LCD_Clear(&hlcd);
+
+  uint32_t data = 0x00;
+  /* To convert displayed character in segment in array digit */
+  uint16_t maska = LetterMap[znak - 'A'];
+
+  //segmentacja maski na 4
+  uint8_t startbit_index = 12;
+  uint8_t COMnumber = 0;
+  for (COMnumber = 0 ; COMnumber < 4; COMnumber++)
+  {
+    Mask_parts[COMnumber] = (maska >> startbit_index) & 0x0f;
+    startbit_index-=4;
+  }
+
+  //COM0
+  data = ((Mask_parts[0] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[0] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+		 | ((( Mask_parts[0] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[0] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM0, LCD_DIGIT1_COM0_SEG_MASK, data); /* 1G 1B 1M 1E */
+
+  //COM1
+  data = (( Mask_parts[1] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[1] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+		 | ((( Mask_parts[1] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[1] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM1, LCD_DIGIT1_COM1_SEG_MASK, data) ; /* 1F 1A 1C 1D  */
+
+  //COM2
+  data = (( Mask_parts[2] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[2] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+		 | ((( Mask_parts[2] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[2] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM2, LCD_DIGIT1_COM2_SEG_MASK, data) ; /* 1Q 1K 1Col 1P  */
+
+  //COM3
+  data = (( Mask_parts[3] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[3] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+		 | ((( Mask_parts[3] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[3] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM3, LCD_DIGIT1_COM3_SEG_MASK, data) ; /* 1H 1J 1DP 1N  */
+
+
+  HAL_LCD_UpdateDisplayRequest(&hlcd);
+}
 /* USER CODE END 0 */
 
 LCD_HandleTypeDef hlcd;
@@ -41,7 +98,7 @@ void MX_LCD_Init(void)
   hlcd.Init.Prescaler = LCD_PRESCALER_16;
   hlcd.Init.Divider = LCD_DIVIDER_17;
   hlcd.Init.Duty = LCD_DUTY_1_4;
-  hlcd.Init.Bias = LCD_BIAS_1_4;
+  hlcd.Init.Bias = LCD_BIAS_1_3;
   hlcd.Init.VoltageSource = LCD_VOLTAGESOURCE_INTERNAL;
   hlcd.Init.Contrast = LCD_CONTRASTLEVEL_0;
   hlcd.Init.DeadTime = LCD_DEADTIME_0;
@@ -55,7 +112,7 @@ void MX_LCD_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN LCD_Init 2 */
-
+  hlcd.Init.Contrast = LCD_CONTRASTLEVEL_7;
   /* USER CODE END LCD_Init 2 */
 
 }
