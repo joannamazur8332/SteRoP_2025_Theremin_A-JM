@@ -228,17 +228,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void MX_DMA_Init(void)
-{
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA2_CLK_ENABLE(); // SAI1 zazwyczaj używa DMA2
-
-  /* DMA interrupt init */
-  /* DMA2_Channel1_IRQn interrupt configuration */
-  // Ustawiamy priorytet i włączamy przerwanie w NVIC
-  HAL_NVIC_SetPriority(DMA2_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Channel1_IRQn);
-}
+//void MX_DMA_Init(void)
+//{
+//  /* DMA controller clock enable */
+//  __HAL_RCC_DMA2_CLK_ENABLE(); // SAI1 zazwyczaj używa DMA2
+//
+//  /* DMA interrupt init */
+//  /* DMA2_Channel1_IRQn interrupt configuration */
+//  // Ustawiamy priorytet i włączamy przerwanie w NVIC
+//  HAL_NVIC_SetPriority(DMA2_Channel1_IRQn, 0, 0);
+//  HAL_NVIC_EnableIRQ(DMA2_Channel1_IRQn);
+//}
 /* USER CODE END 4 */
 
 /**
