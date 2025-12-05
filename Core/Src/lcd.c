@@ -36,7 +36,9 @@ const uint16_t LetterMap[8] =
 };
 
 
+const uint8_t shifts[4] = {LCD_SEG0_SHIFT, LCD_SEG1_SHIFT, LCD_SEG22_SHIFT, LCD_SEG23_SHIFT};
 
+const uint32_t coms[4] = {LCD_COM0,LCD_COM1,LCD_COM2,LCD_COM3};
 
 
 void DisplayLetter(char znak)
@@ -54,27 +56,36 @@ void DisplayLetter(char znak)
   {
     Mask_parts[COMnumber] = (maska >> startbit_index) & 0x0f;
     startbit_index-=4;
+    //nowe
+    data=0x00;
+    for(uint8_t bit=0; bit<4; bit++){
+    	data |= (((Mask_parts[COMnumber] & 1U<<bit)>>bit) << shifts[bit]);
+    }
+    HAL_LCD_Write(&hlcd, coms[COMnumber], SEG_MASK, data);
+
   }
 
+
   //COM0
-  data = ((Mask_parts[0] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[0] & 0x2) >> 1) << LCD_SEG1_SHIFT)
-		 | ((( Mask_parts[0] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[0] & 0x8) >> 3) << LCD_SEG23_SHIFT);
-  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM0, LCD_DIGIT1_COM0_SEG_MASK, data); /* 1G 1B 1M 1E */
 
-  //COM1
-  data = (( Mask_parts[1] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[1] & 0x2) >> 1) << LCD_SEG1_SHIFT)
-		 | ((( Mask_parts[1] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[1] & 0x8) >> 3) << LCD_SEG23_SHIFT);
-  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM1, LCD_DIGIT1_COM1_SEG_MASK, data) ; /* 1F 1A 1C 1D  */
-
-  //COM2
-  data = (( Mask_parts[2] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[2] & 0x2) >> 1) << LCD_SEG1_SHIFT)
-		 | ((( Mask_parts[2] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[2] & 0x8) >> 3) << LCD_SEG23_SHIFT);
-  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM2, LCD_DIGIT1_COM2_SEG_MASK, data) ; /* 1Q 1K 1Col 1P  */
-
-  //COM3
-  data = (( Mask_parts[3] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[3] & 0x2) >> 1) << LCD_SEG1_SHIFT)
-		 | ((( Mask_parts[3] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[3] & 0x8) >> 3) << LCD_SEG23_SHIFT);
-  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM3, LCD_DIGIT1_COM3_SEG_MASK, data) ; /* 1H 1J 1DP 1N  */
+//  data = ((Mask_parts[0] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[0] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+//		 | ((( Mask_parts[0] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[0] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+//  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM0, LCD_DIGIT1_COM0_SEG_MASK, data); /* 1G 1B 1M 1E */
+//
+//  //COM1
+//  data = (( Mask_parts[1] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[1] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+//		 | ((( Mask_parts[1] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[1] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+//  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM1, LCD_DIGIT1_COM1_SEG_MASK, data) ; /* 1F 1A 1C 1D  */
+//
+//  //COM2
+//  data = (( Mask_parts[2] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[2] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+//		 | ((( Mask_parts[2] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[2] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+//  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM2, LCD_DIGIT1_COM2_SEG_MASK, data) ; /* 1Q 1K 1Col 1P  */
+//
+//  //COM3
+//  data = (( Mask_parts[3] & 0x1) << LCD_SEG0_SHIFT) | ((( Mask_parts[3] & 0x2) >> 1) << LCD_SEG1_SHIFT)
+//		 | ((( Mask_parts[3] & 0x4) >> 2) << LCD_SEG22_SHIFT) | ((( Mask_parts[3] & 0x8) >> 3) << LCD_SEG23_SHIFT);
+//  HAL_LCD_Write(&hlcd, LCD_DIGIT1_COM3, LCD_DIGIT1_COM3_SEG_MASK, data) ; /* 1H 1J 1DP 1N  */
 
 
   HAL_LCD_UpdateDisplayRequest(&hlcd);
