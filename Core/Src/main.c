@@ -64,13 +64,14 @@ float phase_pos = 0.0f;
 float volume = 8000.0f;
 
 // Definicje nut
-#define NOTE_C  261.63f
-#define NOTE_D  293.66f
-#define NOTE_E  329.63f
-#define NOTE_F  349.99f
-#define NOTE_G  392.00f
-#define NOTE_A  440.00f
-#define NOTE_B  493.88f
+#define NOTE_C4  261.63f
+#define NOTE_D4 293.66f
+#define NOTE_E4  329.63f
+#define NOTE_F4  349.99f
+#define NOTE_G4  392.00f
+#define NOTE_A4  440.00f
+#define NOTE_B4  493.88f
+#define NOTE_C5 523.25F
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -245,32 +246,35 @@ int main(void)
 	    // Ustawiamy częstotliwość, DMA automatycznie pobierze nowe wartości z bufora
 
 	    // C
-	    current_freq = NOTE_C;
+	    current_freq = NOTE_C4;
 	    HAL_Delay(500); // Czas trwania nuty: 500ms (0.5s)
 
 	    // D
-	    current_freq = NOTE_D;
+	    current_freq = NOTE_D4;
 	    HAL_Delay(500);
 
 	    // E
-	    current_freq = NOTE_E;
+	    current_freq = NOTE_E4;
 	    HAL_Delay(500);
 
 	    // F
-	    current_freq = NOTE_F;
+	    current_freq = NOTE_F4;
 	    HAL_Delay(500);
 
 	    // G
-	    current_freq = NOTE_G;
+	    current_freq = NOTE_G4;
 	    HAL_Delay(500);
 
 	    // A
-	    current_freq = NOTE_A;
+	    current_freq = NOTE_A4;
 	    HAL_Delay(500);
 
 	    // B
-	    current_freq = NOTE_B;
+	    current_freq = NOTE_B4;
 	    HAL_Delay(500);
+
+	    current_freq = NOTE_C5;
+	   	    HAL_Delay(500);
 
 	    // Opcjonalnie: Cisza po gamie przez chwilę
 	    current_freq = 0;
