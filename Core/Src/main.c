@@ -104,7 +104,7 @@ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
     txData[1] = 0x81;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    // DISABLE analog inputs (ADC OFF → brak szumu!)
+    // DISABLE analog inputs
     txData[0] = 0x06;
     txData[1] = 0x04; // Only DAC enabled
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
@@ -124,7 +124,7 @@ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
 
     HAL_Delay(100);
 
-    // Ustaw normalną głośność np. 0x18
+    // Ustawienia glosnosci
     txData[0] = 0x20; txData[1] = 0x18;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
     txData[0] = 0x21; txData[1] = 0x18;
@@ -137,21 +137,20 @@ int _write(int file, char *ptr, int len)
     HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 50);
     return len;
 }
-// Funkcja generująca próbki sinusa do bufora
-// buffer: wskaźnik do fragmentu tablicy
-// num_samples: ile próbek wypełnić
+// generacja probek sinusa do bufora
+
 void Fill_Sine_Buffer(int16_t *buffer, int num_samples) {
     for (int i = 0; i < num_samples; i += 2) { // Krok co 2, bo stereo (L i R)
         float sample_val = 0.0f;
 
         if (current_freq > 0.0f) {
-            // Oblicz wartość sinusa: A * sin(faza)
+            // Obliczenia wartosci sinusa  A * sin(faza)
             sample_val = volume * sinf(phase_pos);
 
-            // Zwiększ fazę: 2*PI * Freq / Fs
+            // Zwiekszenie fazy
             phase_pos += (2.0f * PI * current_freq) / (float)SAMPLE_RATE;
 
-            // Zawijanie fazy w zakresie 0..2PI
+            // Zeijanie fazy w zakresie 0..2PI
             if (phase_pos >= 2.0f * PI) {
                 phase_pos -= 2.0f * PI;
             }
@@ -160,22 +159,22 @@ void Fill_Sine_Buffer(int16_t *buffer, int num_samples) {
 
         }
 
-        // Zapisz tę samą wartość do kanału Lewego i Prawego (Mono na wyjściu Stereo)
+
         buffer[i]     = (int16_t)sample_val; // Left
         buffer[i + 1] = (int16_t)sample_val; // Right
     }
 }
 
-// Callbacki DMA - wywoływane automatycznie, gdy SAI prześle połowę i całość bufora
-// Dzięki temu dźwięk jest ciągły i płynny.
+// Callbacki DMA - wywolywane automatycznie, gdy SAI przesle polowe i calosc bufora
+// Dzięki temu dzwiek jest ciągly i plynny.
 
 void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
-    // Wypełnij pierwszą połowę bufora
+
     Fill_Sine_Buffer(&tx_buffer[0], BUFFER_SIZE / 2);
 }
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
-    // Wypełnij drugą połowę bufora
+
     Fill_Sine_Buffer(&tx_buffer[BUFFER_SIZE / 2], BUFFER_SIZE / 2);
 }
 /* USER CODE END 0 */
@@ -221,7 +220,7 @@ int main(void)
     // Wstępne wypełnienie bufora ciszą lub pierwszą nutą
     Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);
 
-    // Start DMA w trybie CIRCULAR (pętla)
+    // Start DMA w trybie CIRCULAr
     if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)tx_buffer, BUFFER_SIZE) != HAL_OK)
     {
         Error_Handler();
@@ -243,11 +242,11 @@ int main(void)
 	printf("Distance: %li\r\n", distance);
 
 	// --- ODTWARZANIE GAMY ---
-	    // Ustawiamy częstotliwość, DMA automatycznie pobierze nowe wartości z bufora
+
 
 	    // C
 	    current_freq = NOTE_C4;
-	    HAL_Delay(500); // Czas trwania nuty: 500ms (0.5s)
+	    HAL_Delay(500);
 
 	    // D
 	    current_freq = NOTE_D4;
@@ -276,12 +275,9 @@ int main(void)
 	    current_freq = NOTE_C5;
 	   	    HAL_Delay(500);
 
-	    // Opcjonalnie: Cisza po gamie przez chwilę
-	    current_freq = 0;
-	    HAL_Delay(1000);
 
-	    // Uwaga: "po 5s" w twoim opisie może znaczyć "czas trwania 5 sekund" (wpisz 5000)
-	    // lub "przerwa 5s". Powyżej użyłem 500ms (pół sekundy) dla płynnej gamy.
+	    //current_freq = 0;
+	    //HAL_Delay(1000);
 	  }
 
 
