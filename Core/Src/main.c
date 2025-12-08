@@ -70,7 +70,7 @@ float volume = 8000.0f;
 #define NOTE_F4  349.99f
 #define NOTE_G4  392.00f
 #define NOTE_A4  440.00f
-#define NOTE_B4  493.88f
+#define NOTE_H4  493.88f
 #define NOTE_C5 523.25F
 /* USER CODE END PV */
 
@@ -268,8 +268,8 @@ int main(void)
 	    current_freq = NOTE_A4;
 	    HAL_Delay(500);
 
-	    // B
-	    current_freq = NOTE_B4;
+	    // H
+	    current_freq = NOTE_H4;
 	    HAL_Delay(500);
 
 	    current_freq = NOTE_C5;
