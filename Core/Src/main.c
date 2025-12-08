@@ -59,9 +59,9 @@
 int16_t tx_buffer[BUFFER_SIZE];
 
 // Zmienne syntezy
-volatile float current_freq = 0.0f;
-float phase_pos = 0.0f;
-float volume = 8000.0f;
+volatile float current_freq = 0.0f; //aktualna f dzwieku
+float phase_pos = 0.0f; //obecna faza
+float volume = 8000.0f; //do glosnosci
 
 // Definicje nut
 #define NOTE_C4  261.63f
@@ -87,21 +87,21 @@ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
 
     // Hardware reset
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
-    HAL_Delay(50);
+    HAL_Delay(50); //reset na 50ms
 
     // Power Down
     txData[0] = 0x02;
     txData[1] = 0x01; // Power down
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    // Speaker OFF, HP ON
+    // Speaker OFF, Headpfones ON
     txData[0] = 0x04;
     txData[1] = 0xAF;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
     // Auto clock detect
     txData[0] = 0x05;
-    txData[1] = 0x81;
+    txData[1] = 0x81;//wlacza auto-detekcje zegara
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
     // DISABLE analog inputs
@@ -114,6 +114,7 @@ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
     txData[0] = 0x21; txData[1] = 0xFF;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+	//brak trzaskow na poczatku
 
     HAL_Delay(10);
 
@@ -150,7 +151,7 @@ void Fill_Sine_Buffer(int16_t *buffer, int num_samples) {
             // Zwiekszenie fazy
             phase_pos += (2.0f * PI * current_freq) / (float)SAMPLE_RATE;
 
-            // Zeijanie fazy w zakresie 0..2PI
+            // Zeijanie fazy w zakresie 0..2PI, zeby nie rosla w nieskonczonosc
             if (phase_pos >= 2.0f * PI) {
                 phase_pos -= 2.0f * PI;
             }
@@ -177,6 +178,8 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 
     Fill_Sine_Buffer(&tx_buffer[BUFFER_SIZE / 2], BUFFER_SIZE / 2);
 }
+//ping-pong caly bufor -> dac, po pierwszej polowie wywolany txhalf...
+//napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly
 /* USER CODE END 0 */
 
 /**
@@ -215,7 +218,7 @@ int main(void)
   MX_LCD_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  CS43L22_Init(&hi2c1);
+  CS43L22_Init(&hi2c1);//inicjalizacja
 
     // Wstępne wypełnienie bufora ciszą lub pierwszą nutą
     Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);
@@ -239,7 +242,7 @@ int main(void)
 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
 	read_HCSR04();
 	HAL_Delay(200);
-	printf("Distance: %li\r\n", distance);
+	printf("Distance: %li\r\n", distance);//czesc asi
 
 	// --- ODTWARZANIE GAMY ---
 
@@ -278,6 +281,7 @@ int main(void)
 
 	    //current_freq = 0;
 	    //HAL_Delay(1000);
+	  
 	  }
 
 
