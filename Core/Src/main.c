@@ -29,7 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "czujnik.h"
-
+#include <stdlib.h>
 #include <math.h>
 /* USER CODE END Includes */
 
@@ -40,7 +40,21 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define CS43L22_I2C_ADDR  0x94
+#define SAMPLE_RATE       16000
+#define PI                3.14159265f
+// Definicje nut
+#define NOTE_C4  261.63f
+#define NOTE_D4 293.66f
+#define NOTE_E4  329.63f
+#define NOTE_F4  349.99f
+#define NOTE_G4  392.00f
+#define NOTE_A4  440.00f
+#define NOTE_H4  493.88f
+#define NOTE_C5 523.25f
+//wybrana ilosc skali
+#define NUM_SCALES 1
+#define NUM_NOTES 8
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,9 +65,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-#define CS43L22_I2C_ADDR  0x94
-#define SAMPLE_RATE       16000
-#define PI                3.14159265f
+
 
 // Bufor audio
 #define BUFFER_SIZE       2048
@@ -63,22 +75,34 @@ int16_t tx_buffer[BUFFER_SIZE];
 volatile float current_freq = 0.0f; //aktualna f dzwieku
 float phase_pos = 0.0f; //obecna faza
 float volume = 8000.0f; //do glosnosci
+char tab_liter[]={'C','D','E','F','G','A','H', 'C'};
 
-// Definicje nut
-#define NOTE_C4  261.63f
-#define NOTE_D4 293.66f
-#define NOTE_E4  329.63f
-#define NOTE_F4  349.99f
-#define NOTE_G4  392.00f
-#define NOTE_A4  440.00f
-#define NOTE_H4  493.88f
-#define NOTE_C5 523.25F
+float notes[NUM_SCALES][NUM_NOTES]={
+//{},
+//{},		//inne skale
+//{},
+{ NOTE_C4,NOTE_D4 ,NOTE_E4, NOTE_F4 ,NOTE_G4 ,NOTE_A4, NOTE_H4, NOTE_C5}
+};
+uint32_t min_distance=3;
+uint32_t max_distance=24;
+uint32_t last_distance=0;
+int current_scale=0;
+volatile int autotune=1;
+volatile int state=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void CS43L22_Init(I2C_HandleTypeDef *hi2c);
+int _write(int file, char *ptr, int len);
+void Fill_Sine_Buffer(int16_t *buffer, int num_samples);
+void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai);
+void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai);
+void Autotune_play(int numer_skali);
+void play(int numer_skali);
+void Gama(int numer_skali);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -181,6 +205,70 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 }
 //ping-pong caly bufor -> dac, po pierwszej polowie wywolany txhalf...
 //napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly
+
+
+void Autotune_play(int numer_skali){
+	if(numer_skali>NUM_SCALES || numer_skali<0)return;
+	if(abs(last_distance-distance)<3){
+		 distance = last_distance;
+	}
+	else{
+		last_distance = distance;
+	}
+	int index;
+	if(distance>max_distance)index=NUM_NOTES-1;
+	else if(distance<min_distance)index =0;
+	else index = (distance-min_distance)/3;
+	current_freq = notes[numer_skali][index];
+	DisplayLetter(tab_liter[index]);
+}
+
+void play(int numer_skali){
+	if(numer_skali>NUM_SCALES || numer_skali<0)return;
+//	if(abs(last_distance-distance)<3){
+//		 distance = last_distance;
+//	}
+//	else{
+//		last_distance = distance;
+//	}
+	if(distance>max_distance) current_freq = notes[numer_skali][NUM_NOTES-1];
+	else if(distance<min_distance) current_freq = notes[numer_skali][0];
+	else{
+		 current_freq = notes[numer_skali][0] + (notes[numer_skali][NUM_NOTES-1] - notes[numer_skali][0]) * (distance - min_distance) / (float)(max_distance - min_distance);
+	}
+}
+
+
+void Gama(int numer_skali){
+	for(int i=0; i<8; i++){
+		current_freq=notes[numer_skali][i];
+		HAL_Delay(500);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == JOY_Center_Pin) {
+		state = !state;
+	}
+	else if(GPIO_Pin == JOY_Up_Pin){
+		if(current_scale<NUM_SCALES){
+			current_scale++;
+		}
+	}
+	else if(GPIO_Pin == JOY_Down_Pin){
+		if(current_scale>0){
+			current_scale-=1;
+		}
+	}
+	else if(GPIO_Pin == JOY_Right_Pin){
+		autotune=1;
+	}
+	else if(GPIO_Pin == JOY_Left_Pin){
+		autotune=0;
+	}
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -221,18 +309,19 @@ int main(void)
   /* USER CODE BEGIN 2 */
   CS43L22_Init(&hi2c1);//inicjalizacja
 
-    // Wstępne wypełnienie bufora ciszą lub pierwszą nutą
-    Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);
+	// Wstępne wypełnienie bufora ciszą lub pierwszą nutą
+	Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);
 
-    // Start DMA w trybie CIRCULAr
-    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)tx_buffer, BUFFER_SIZE) != HAL_OK)
-    {
-        Error_Handler();
-    }
-  char tab_liter[]={'C','D','E','F','G','A','H'};
-  uint8_t index=0;
+	// Start DMA w trybie CIRCULAr
+	if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)tx_buffer, BUFFER_SIZE) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
 
+  uint32_t last_measure_time = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -243,58 +332,26 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
-	read_HCSR04();
-	DisplayLetter(tab_liter[index]);
-	index=(index+1)%7;
-	HAL_Delay(500);
-	printf("Distance: %li\r\n", distance);
+	if(state){
+		if(HAL_GetTick()-last_measure_time>=50){
+			read_HCSR04();
+			last_measure_time=HAL_GetTick();
+		}
 
+		printf("Distance: %li\r\n", distance);
+		if(autotune){
+			Autotune_play(current_scale);
+		}
+		else play(current_scale);
+		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, RESET);
+	}
+	else{
+		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, SET);
+		//zatrzymanie dźwięku - pauza
+	}
 
-
-  
-	HAL_Delay(200);
-	printf("Distance: %li\r\n", distance);//czesc asi
-
-	// --- ODTWARZANIE GAMY ---
-
-
-	    // C
-	    current_freq = NOTE_C4;
-	    HAL_Delay(500);
-
-	    // D
-	    current_freq = NOTE_D4;
-	    HAL_Delay(500);
-
-	    // E
-	    current_freq = NOTE_E4;
-	    HAL_Delay(500);
-
-	    // F
-	    current_freq = NOTE_F4;
-	    HAL_Delay(500);
-
-	    // G
-	    current_freq = NOTE_G4;
-	    HAL_Delay(500);
-
-	    // A
-	    current_freq = NOTE_A4;
-	    HAL_Delay(500);
-
-	    // H
-	    current_freq = NOTE_H4;
-	    HAL_Delay(500);
-
-	    current_freq = NOTE_C5;
-	   	    HAL_Delay(500);
 
   }
-	    //current_freq = 0;
-	    //HAL_Delay(1000);
-	  
-	  
 
 
   /* USER CODE END 3 */

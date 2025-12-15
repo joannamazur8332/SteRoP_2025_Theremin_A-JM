@@ -59,14 +59,19 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define JOY_Center_Pin GPIO_PIN_0
 #define JOY_Center_GPIO_Port GPIOA
+#define JOY_Center_EXTI_IRQn EXTI0_IRQn
 #define JOY_Left_Pin GPIO_PIN_1
 #define JOY_Left_GPIO_Port GPIOA
+#define JOY_Left_EXTI_IRQn EXTI1_IRQn
 #define JOY_Right_Pin GPIO_PIN_2
 #define JOY_Right_GPIO_Port GPIOA
+#define JOY_Right_EXTI_IRQn EXTI2_IRQn
 #define JOY_Up_Pin GPIO_PIN_3
 #define JOY_Up_GPIO_Port GPIOA
+#define JOY_Up_EXTI_IRQn EXTI3_IRQn
 #define JOY_Down_Pin GPIO_PIN_5
 #define JOY_Down_GPIO_Port GPIOA
+#define JOY_Down_EXTI_IRQn EXTI9_5_IRQn
 #define LD_G_Pin GPIO_PIN_8
 #define LD_G_GPIO_Port GPIOE
 #define TRIG_Pin GPIO_PIN_10
