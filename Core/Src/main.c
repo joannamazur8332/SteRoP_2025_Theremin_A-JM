@@ -29,11 +29,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "czujnik.h"
-<<<<<<< HEAD
 
-=======
 #include <math.h>
->>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -232,14 +229,10 @@ int main(void)
     {
         Error_Handler();
     }
-<<<<<<< HEAD
   char tab_liter[]={'C','D','E','F','G','A','H'};
   uint8_t index=0;
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
-=======
 
-    HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
->>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -252,7 +245,6 @@ int main(void)
 
 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
 	read_HCSR04();
-<<<<<<< HEAD
 	DisplayLetter(tab_liter[index]);
 	index=(index+1)%7;
 	HAL_Delay(500);
@@ -260,8 +252,7 @@ int main(void)
 
 
 
-  }
-=======
+  
 	HAL_Delay(200);
 	printf("Distance: %li\r\n", distance);//czesc asi
 
@@ -303,10 +294,9 @@ int main(void)
 	    //current_freq = 0;
 	    //HAL_Delay(1000);
 	  
-	  }
+	  
 
 
->>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
   /* USER CODE END 3 */
 }
 

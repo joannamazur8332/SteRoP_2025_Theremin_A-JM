@@ -1,0 +1,406 @@
+[1mdiff --git a/.cproject b/.cproject[m
+[1mindex 37b8d5b..4a09e3d 100644[m
+[1m--- a/.cproject[m
+[1m+++ b/.cproject[m
+[36m@@ -36,7 +36,7 @@[m
+ 							</tool>[m
+ 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.535387035" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">[m
+ 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.180422839" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g3" valueType="enumerated"/>[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.907026369" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.907026369" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.ofast" valueType="enumerated"/>[m
+ 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.442997214" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">[m
+ 									<listOptionValue builtIn="false" value="DEBUG"/>[m
+ 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>[m
+[36m@@ -98,28 +98,28 @@[m
+ 				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1538827392" name="Release" parent="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release">[m
+ 					<folderInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1538827392." name="/" resourcePath="">[m
+ 						<toolChain id="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.release.1720911782" name="MCU ARM GCC" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.release">[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_mcu.1170649249" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_mcu" useByScannerDiscovery="true" value="STM32L476VGTx" valueType="string"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_cpuid.1068790992" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_cpuid" useByScannerDiscovery="false" value="0" valueType="string"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_coreid.351860321" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_coreid" useByScannerDiscovery="false" value="0" valueType="string"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.125659790" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.value.fpv4-sp-d16" valueType="enumerated"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.299149169" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard" valueType="enumerated"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.45574481" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="genericBoard" valueType="string"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1749770212" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.6 || Release || false || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32L476VGTx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32L4xx_HAL_Driver/Inc | ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32L4xx/Include | ../Drivers/CMSIS/Include ||  ||  || USE_HAL_DRIVER | STM32L476xx ||  || Drivers | Core/Startup | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32L476VGTX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None ||  ||  || " valueType="string"/>[m
+[31m-							<option id="com.st.stm32cube.ide.mcu.debug.option.cpuclock.135814420" superClass="com.st.stm32cube.ide.mcu.debug.option.cpuclock" useByScannerDiscovery="false" value="80" valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_mcu.1170649249" name="MCU" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_mcu" useByScannerDiscovery="true" value="STM32L476VGTx" valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_cpuid.1068790992" name="CPU" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_cpuid" useByScannerDiscovery="false" value="0" valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_coreid.351860321" name="Core" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_coreid" useByScannerDiscovery="false" value="0" valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.125659790" name="Floating-point unit" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.value.fpv4-sp-d16" valueType="enumerated"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.299149169" name="Floating-point ABI" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard" valueType="enumerated"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.45574481" name="Board" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="genericBoard" valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1749770212" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.6 || Release || false || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32L476VGTx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32L4xx_HAL_Driver/Inc | ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32L4xx/Include | ../Drivers/CMSIS/Include ||  ||  || USE_HAL_DRIVER | STM32L476xx ||  || Drivers | Core/Startup | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32L476VGTX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None ||  ||  || " valueType="string"/>[m
+[32m+[m							[32m<option id="com.st.stm32cube.ide.mcu.debug.option.cpuclock.135814420" name="Cpu clock frequence" superClass="com.st.stm32cube.ide.mcu.debug.option.cpuclock" useByScannerDiscovery="false" value="80" valueType="string"/>[m
+ 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.2142513575" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>[m
+[31m-							<builder buildPath="${workspace_loc:/srprojekt}/Release" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.401083101" managedBuildOn="true" name="Gnu Make Builder.Release" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>[m
+[32m+[m							[32m<builder buildPath="${workspace_loc:/srprojekt}/Release" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.401083101" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>[m
+ 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.972232035" name="MCU/MPU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.1571481148" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.1571481148" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+ 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.589703268" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>[m
+ 							</tool>[m
+ 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1683582000" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.533343348" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.1002128611" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.os" valueType="enumerated"/>[m
+[31m-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.245431769" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.533343348" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.1002128611" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.os" valueType="enumerated"/>[m
+[32m+[m								[32m<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.245431769" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">[m
+ 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>[m
+ 									<listOptionValue builtIn="false" value="STM32L476xx"/>[m
+ 								</option>[m
+[31m-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1648432133" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">[m
+[32m+[m								[32m<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1648432133" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">[m
+ 									<listOptionValue builtIn="false" value="../Core/Inc"/>[m
+ 									<listOptionValue builtIn="false" value="../Drivers/STM32L4xx_HAL_Driver/Inc"/>[m
+ 									<listOptionValue builtIn="false" value="../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"/>[m
+[36m@@ -129,11 +129,11 @@[m
+ 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.940616244" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>[m
+ 							</tool>[m
+ 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.892906245" name="MCU/MPU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel.1892338878" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level.1350546014" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level.value.os" valueType="enumerated"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel.1892338878" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.debuglevel.value.g0" valueType="enumerated"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level.1350546014" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.optimization.level.value.os" valueType="enumerated"/>[m
+ 							</tool>[m
+ 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.741206389" name="MCU/MPU GCC Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker">[m
+[31m-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script.1157748627" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script" value="${workspace_loc:/${ProjName}/STM32L476VGTX_FLASH.ld}" valueType="string"/>[m
+[32m+[m								[32m<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script.1157748627" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script" value="${workspace_loc:/${ProjName}/STM32L476VGTX_FLASH.ld}" valueType="string"/>[m
+ 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input.34547318" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input">[m
+ 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>[m
+ 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>[m
+[36m@@ -174,5 +174,12 @@[m
+ 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>[m
+ 		</scannerConfigBuildInfo>[m
+ 	</storageModule>[m
+[31m-	<storageModule moduleId="refreshScope"/>[m
+[32m+[m	[32m<storageModule moduleId="refreshScope" versionNumber="2">[m
+[32m+[m		[32m<configuration configurationName="Debug">[m
+[32m+[m			[32m<resource resourceType="PROJECT" workspacePath="/srprojekt"/>[m
+[32m+[m		[32m</configuration>[m
+[32m+[m		[32m<configuration configurationName="Release">[m
+[32m+[m			[32m<resource resourceType="PROJECT" workspacePath="/srprojekt"/>[m
+[32m+[m		[32m</configuration>[m
+[32m+[m	[32m</storageModule>[m
+ </cproject>[m
+\ No newline at end of file[m
+[1mdiff --git a/.settings/language.settings.xml b/.settings/language.settings.xml[m
+[1mindex 8b18b13..8339c6c 100644[m
+[1m--- a/.settings/language.settings.xml[m
+[1m+++ b/.settings/language.settings.xml[m
+[36m@@ -5,7 +5,7 @@[m
+ 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>[m
+ 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>[m
+ 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>[m
+[31m-			<provider class="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" console="false" env-hash="-1204678070890376255" id="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="MCU ARM GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">[m
+[32m+[m			[32m<provider class="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" console="false" env-hash="753021233987661383" id="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="MCU ARM GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">[m
+ 				<language-scope id="org.eclipse.cdt.core.gcc"/>[m
+ 				<language-scope id="org.eclipse.cdt.core.g++"/>[m
+ 			</provider>[m
+[36m@@ -16,7 +16,7 @@[m
+ 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>[m
+ 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>[m
+ 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>[m
+[31m-			<provider class="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" console="false" env-hash="-1204678070890376255" id="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="MCU ARM GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">[m
+[32m+[m			[32m<provider class="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" console="false" env-hash="753021233987661383" id="com.st.stm32cube.ide.mcu.toolchain.armnone.setup.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="MCU ARM GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">[m
+ 				<language-scope id="org.eclipse.cdt.core.gcc"/>[m
+ 				<language-scope id="org.eclipse.cdt.core.g++"/>[m
+ 			</provider>[m
+[1mdiff --git a/.settings/stm32cubeide.project.prefs b/.settings/stm32cubeide.project.prefs[m
+[1mindex 132dd3b..b5d9789 100644[m
+[1m--- a/.settings/stm32cubeide.project.prefs[m
+[1m+++ b/.settings/stm32cubeide.project.prefs[m
+[36m@@ -1,15 +1,21 @@[m
+[32m+[m[32m=\=\=\=\=\=\=[m
+ 2F62501ED4689FB349E356AB974DBE57=D317EF927136E437DA7BC23AEC7BF4EB[m
+ 635E684B79701B039C64EA45C3F84D30=4498DE54E1BBFA07641A905A51310F8B[m
+ <<<<<<< HEAD[m
+ <<<<<<< HEAD[m
+[31m-8DF89ED150041C4CBC7CB9A9CAA90856=D317EF927136E437DA7BC23AEC7BF4EB[m
+[31m-DC22A860405A8BF2F2C095E5B6529F12=D708693031243F1400E41E5B02B07E0D[m
+[32m+[m[32m<<<<<<< HEAD[m
+ =======[m
+[31m-8DF89ED150041C4CBC7CB9A9CAA90856=786C351382A21414639A37DBD9CABFE8[m
+[32m+[m[32m>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc[m
+[32m+[m[32m8DF89ED150041C4CBC7CB9A9CAA90856=D317EF927136E437DA7BC23AEC7BF4EB[m
+[32m+[m[32m<<<<<<<=HEAD[m
+[32m+[m[32m>>>>>>>=main[m
+ DC22A860405A8BF2F2C095E5B6529F12=786C351382A21414639A37DBD9CABFE8[m
+[32m+[m[32m<<<<<<< HEAD[m
+ >>>>>>> main[m
+ =======[m
+ 8DF89ED150041C4CBC7CB9A9CAA90856=D317EF927136E437DA7BC23AEC7BF4EB[m
+ DC22A860405A8BF2F2C095E5B6529F12=D708693031243F1400E41E5B02B07E0D[m
+ >>>>>>> asia[m
+[32m+[m[32m=======[m
+[32m+[m[32m>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc[m
+ eclipse.preferences.version=1[m
+[1mdiff --git a/Core/Src/main.c b/Core/Src/main.c[m
+[1mindex 70374cb..6cbe7d4 100644[m
+[1m--- a/Core/Src/main.c[m
+[1m+++ b/Core/Src/main.c[m
+[36m@@ -29,7 +29,11 @@[m
+ /* Private includes ----------------------------------------------------------*/[m
+ /* USER CODE BEGIN Includes */[m
+ #include "czujnik.h"[m
+[32m+[m[32m<<<<<<< HEAD[m
+ [m
+[32m+[m[32m=======[m
+[32m+[m[32m#include <math.h>[m
+[32m+[m[32m>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc[m
+ /* USER CODE END Includes */[m
+ [m
+ /* Private typedef -----------------------------------------------------------*/[m
+[36m@@ -50,20 +54,28 @@[m
+ /* Private variables ---------------------------------------------------------*/[m
+ [m
+ /* USER CODE BEGIN PV */[m
+[31m-#define CS43L22_I2C_ADDR  0x94  // Adres układu audio na I2C[m
+[31m-[m
+[31m-// Bufor z jedną pełną sinusoidą (ok. 160Hz przy próbkowaniu 16kHz)[m
+[31m-int16_t sine_wave[100] = {[m
+[31m-    0, 2057, 4067, 5985, 7765, 9368, 10760, 11909, 12796, 13404,[m
+[31m-    13728, 13768, 13525, 13002, 12206, 11150, 9849, 8320, 6592, 4697,[m
+[31m-    2673, 563, -1588, -3729, -5809, -7778, -9588, -11195, -12558, -13639,[m
+[31m-    -14408, -14846, -14948, -14713, -14146, -13260, -12076, -10620, -8923, -7025,[m
+[31m-    -4972, -2813, -597, 1625, 3804, 5887, 7824, 9568, 11078, 12318,[m
+[31m-    13260, 13889, 14197, 14182, 13847, 13197, 12242, 10998, 9489, 7747,[m
+[31m-    5812, 3731, 1555, -664, -2877, -5031, -7077, -8968, -10656, -12102,[m
+[31m-    -13274, -14143, -14691, -14909, -14792, -14339, -13557, -12466, -11097, -9492,[m
+[31m-    -7693, -5741, -3678, -1553, 579, 2664, 4648, 6483, 8128, 9548[m
+[31m-};[m
+[32m+[m[32m#define CS43L22_I2C_ADDR  0x94[m
+[32m+[m[32m#define SAMPLE_RATE       16000[m
+[32m+[m[32m#define PI                3.14159265f[m
+[32m+[m
+[32m+[m[32m// Bufor audio[m
+[32m+[m[32m#define BUFFER_SIZE       2048[m
+[32m+[m[32mint16_t tx_buffer[BUFFER_SIZE];[m
+[32m+[m
+[32m+[m[32m// Zmienne syntezy[m
+[32m+[m[32mvolatile float current_freq = 0.0f; //aktualna f dzwieku[m
+[32m+[m[32mfloat phase_pos = 0.0f; //obecna faza[m
+[32m+[m[32mfloat volume = 8000.0f; //do glosnosci[m
+[32m+[m
+[32m+[m[32m// Definicje nut[m
+[32m+[m[32m#define NOTE_C4  261.63f[m
+[32m+[m[32m#define NOTE_D4 293.66f[m
+[32m+[m[32m#define NOTE_E4  329.63f[m
+[32m+[m[32m#define NOTE_F4  349.99f[m
+[32m+[m[32m#define NOTE_G4  392.00f[m
+[32m+[m[32m#define NOTE_A4  440.00f[m
+[32m+[m[32m#define NOTE_H4  493.88f[m
+[32m+[m[32m#define NOTE_C5 523.25F[m
+ /* USER CODE END PV */[m
+ [m
+ /* Private function prototypes -----------------------------------------------*/[m
+[36m@@ -75,42 +87,103 @@[m [mvoid SystemClock_Config(void);[m
+ /* Private user code ---------------------------------------------------------*/[m
+ /* USER CODE BEGIN 0 */[m
+ void CS43L22_Init(I2C_HandleTypeDef *hi2c) {[m
+[31m-    // 1. OBUDZENIE UKŁADU (HARDWARE RESET)[m
+[31m-    // Pin PE3 musi być w stanie WYSOKIM, żeby układ działał.[m
+[31m-    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);[m
+[31m-    HAL_Delay(50); // Czekamy aż układ wstanie[m
+[31m-[m
+     uint8_t txData[2];[m
+ [m
+[31m-    // 2. POWER ON (Rejestr 0x02 -> 0x9E)[m
+[32m+[m[32m    // Hardware reset[m
+[32m+[m[32m    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);[m
+[32m+[m[32m    HAL_Delay(50); //reset na 50ms[m
+[32m+[m
+[32m+[m[32m    // Power Down[m
+     txData[0] = 0x02;[m
+[31m-    txData[1] = 0x9E;[m
+[32m+[m[32m    txData[1] = 0x01; // Power down[m
+     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+ [m
+[31m-    // 3. WŁĄCZENIE WYJŚCIA SŁUCHAWKOWEGO I SYGNAŁU (Rejestr 0x04 -> 0xAF)[m
+[32m+[m[32m    // Speaker OFF, Headpfones ON[m
+     txData[0] = 0x04;[m
+     txData[1] = 0xAF;[m
+     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+ [m
+[31m-    // 4. KONFIGURACJA ZEGARA (AUTO-DETECT) (Rejestr 0x05 -> 0x81)[m
+[32m+[m[32m    // Auto clock detect[m
+     txData[0] = 0x05;[m
+[31m-    txData[1] = 0x81;[m
+[32m+[m[32m    txData[1] = 0x81;//wlacza auto-detekcje zegara[m
+[32m+[m[32m    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+[32m+[m
+[32m+[m[32m    // DISABLE analog inputs[m
+[32m+[m[32m    txData[0] = 0x06;[m
+[32m+[m[32m    txData[1] = 0x04; // Only DAC enabled[m
+     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+ [m
+[31m-    // 5. USTAWIENIE GŁOŚNOŚCI (Rejestr 0x20 i 0x21 -> 0x18)[m
+[31m-    // Wartość 0x18 to przyzwoita głośność testowa. Max to 0x00 (+12dB), Min to 0xFF.[m
+[31m-    txData[0] = 0x20; txData[1] = 0x18; // Kanał A[m
+[32m+[m[32m    // Mute both channels on startup[m
+[32m+[m[32m    txData[0] = 0x20; txData[1] = 0xFF;[m
+     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+[32m+[m[32m    txData[0] = 0x21; txData[1] = 0xFF;[m
+[32m+[m[32m    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+[32m+[m	[32m//brak trzaskow na poczatku[m
+[32m+[m
+[32m+[m[32m    HAL_Delay(10);[m
+[32m+[m
+[32m+[m[32m    // POWER UP + DAC START (PLAY MODE)[m
+[32m+[m[32m    txData[0] = 0x02;[m
+[32m+[m[32m    txData[1] = 0x9E; // Playback ON + HP enabled[m
+[32m+[m[32m    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+[32m+[m
+[32m+[m[32m    HAL_Delay(100);[m
+ [m
+[31m-    txData[0] = 0x21; txData[1] = 0x18; // Kanał B[m
+[32m+[m[32m    // Ustawienia glosnosci[m
+[32m+[m[32m    txData[0] = 0x20; txData[1] = 0x18;[m
+[32m+[m[32m    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+[32m+[m[32m    txData[0] = 0x21; txData[1] = 0x18;[m
+     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);[m
+ }[m
+ [m
+[32m+[m
+ int _write(int file, char *ptr, int len)[m
+ {[m
+     HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 50);[m
+     return len;[m
+ }[m
+[32m+[m[32m// generacja probek sinusa do bufora[m
+[32m+[m
+[32m+[m[32mvoid Fill_Sine_Buffer(int16_t *buffer, int num_samples) {[m
+[32m+[m[32m    for (int i = 0; i < num_samples; i += 2) { // Krok co 2, bo stereo (L i R)[m
+[32m+[m[32m        float sample_val = 0.0f;[m
+[32m+[m
+[32m+[m[32m        if (current_freq > 0.0f) {[m
+[32m+[m[32m            // Obliczenia wartosci sinusa  A * sin(faza)[m
+[32m+[m[32m            sample_val = volume * sinf(phase_pos);[m
+[32m+[m
+[32m+[m[32m            // Zwiekszenie fazy[m
+[32m+[m[32m            phase_pos += (2.0f * PI * current_freq) / (float)SAMPLE_RATE;[m
+[32m+[m
+[32m+[m[32m            // Zeijanie fazy w zakresie 0..2PI, zeby nie rosla w nieskonczonosc[m
+[32m+[m[32m            if (phase_pos >= 2.0f * PI) {[m
+[32m+[m[32m                phase_pos -= 2.0f * PI;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            sample_val = 0.0f; // Cisza[m
+[32m+[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        buffer[i]     = (int16_t)sample_val; // Left[m
+[32m+[m[32m        buffer[i + 1] = (int16_t)sample_val; // Right[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Callbacki DMA - wywolywane automatycznie, gdy SAI przesle polowe i calosc bufora[m
+[32m+[m[32m// Dzięki temu dzwiek jest ciągly i plynny.[m
+[32m+[m
+[32m+[m[32mvoid HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {[m
+[32m+[m
+[32m+[m[32m    Fill_Sine_Buffer(&tx_buffer[0], BUFFER_SIZE / 2);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {[m
+[32m+[m
+[32m+[m[32m    Fill_Sine_Buffer(&tx_buffer[BUFFER_SIZE / 2], BUFFER_SIZE / 2);[m
+[32m+[m[32m}[m
+[32m+[m[32m//ping-pong caly bufor -> dac, po pierwszej polowie wywolany txhalf...[m
+[32m+[m[32m//napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly[m
+ /* USER CODE END 0 */[m
+ [m
+ /**[m
+[36m@@ -149,18 +222,24 @@[m [mint main(void)[m
+   MX_LCD_Init();[m
+   MX_USART2_UART_Init();[m
+   /* USER CODE BEGIN 2 */[m
+[31m-  // Inicjalizujemy kodek audio (włączamy zasilanie na PE3 i konfigurujemy przez I2C)[m
+[31m-    CS43L22_Init(&hi2c1);[m
+[32m+[m[32m  CS43L22_Init(&hi2c1);//inicjalizacja[m
+[32m+[m
+[32m+[m[32m    // Wstępne wypełnienie bufora ciszą lub pierwszą nutą[m
+[32m+[m[32m    Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);[m
+ [m
+[31m-    // Uruchamiamy wysyłanie danych sinusoidy przez SAI (DMA) w pętli (Circular)[m
+[31m-    // "sine_wave" to nasze dane, "100" to liczba próbek w tablicy[m
+[31m-    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)sine_wave, 100) != HAL_OK)[m
+[32m+[m[32m    // Start DMA w trybie CIRCULAr[m
+[32m+[m[32m    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)tx_buffer, BUFFER_SIZE) != HAL_OK)[m
+     {[m
+[31m-        Error_Handler(); // Jeśli tu wejdzie, coś jest nie tak z zegarami SAI lub DMA[m
+[32m+[m[32m        Error_Handler();[m
+     }[m
+[32m+[m[32m<<<<<<< HEAD[m
+   char tab_liter[]={'C','D','E','F','G','A','H'};[m
+   uint8_t index=0;[m
+   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);[m
+[32m+[m[32m=======[m
+[32m+[m
+[32m+[m[32m    HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);[m
+[32m+[m[32m>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc[m
+   /* USER CODE END 2 */[m
+ [m
+   /* Infinite loop */[m
+[36m@@ -173,6 +252,7 @@[m [mint main(void)[m
+ [m
+ 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);[m
+ 	read_HCSR04();[m
+[32m+[m[32m<<<<<<< HEAD[m
+ 	DisplayLetter(tab_liter[index]);[m
+ 	index=(index+1)%7;[m
+ 	HAL_Delay(500);[m
+[36m@@ -181,6 +261,52 @@[m [mint main(void)[m
+ [m
+ [m
+   }[m
+[32m+[m[32m=======[m
+[32m+[m	[32mHAL_Delay(200);[m
+[32m+[m	[32mprintf("Distance: %li\r\n", distance);//czesc asi[m
+[32m+[m
+[32m+[m	[32m// --- ODTWARZANIE GAMY ---[m
+[32m+[m
+[32m+[m
+[32m+[m	[32m    // C[m
+[32m+[m	[32m    current_freq = NOTE_C4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // D[m
+[32m+[m	[32m    current_freq = NOTE_D4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // E[m
+[32m+[m	[32m    current_freq = NOTE_E4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // F[m
+[32m+[m	[32m    current_freq = NOTE_F4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // G[m
+[32m+[m	[32m    current_freq = NOTE_G4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // A[m
+[32m+[m	[32m    current_freq = NOTE_A4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    // H[m
+[32m+[m	[32m    current_freq = NOTE_H4;[m
+[32m+[m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m	[32m    current_freq = NOTE_C5;[m
+[32m+[m	[41m   [m	[32m    HAL_Delay(500);[m
+[32m+[m
+[32m+[m
+[32m+[m	[32m    //current_freq = 0;[m
+[32m+[m	[32m    //HAL_Delay(1000);[m
+[32m+[m[41m	  [m
+[32m+[m	[32m  }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc[m
+   /* USER CODE END 3 */[m
+ }[m
+ [m
