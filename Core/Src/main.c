@@ -290,7 +290,7 @@ int main(void)
 	    current_freq = NOTE_C5;
 	   	    HAL_Delay(500);
 
-
+  }
 	    //current_freq = 0;
 	    //HAL_Delay(1000);
 	  
