@@ -29,7 +29,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "czujnik.h"
+<<<<<<< HEAD
 
+=======
+#include <math.h>
+>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,20 +54,28 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-#define CS43L22_I2C_ADDR  0x94  // Adres układu audio na I2C
+#define CS43L22_I2C_ADDR  0x94
+#define SAMPLE_RATE       16000
+#define PI                3.14159265f
 
-// Bufor z jedną pełną sinusoidą (ok. 160Hz przy próbkowaniu 16kHz)
-int16_t sine_wave[100] = {
-    0, 2057, 4067, 5985, 7765, 9368, 10760, 11909, 12796, 13404,
-    13728, 13768, 13525, 13002, 12206, 11150, 9849, 8320, 6592, 4697,
-    2673, 563, -1588, -3729, -5809, -7778, -9588, -11195, -12558, -13639,
-    -14408, -14846, -14948, -14713, -14146, -13260, -12076, -10620, -8923, -7025,
-    -4972, -2813, -597, 1625, 3804, 5887, 7824, 9568, 11078, 12318,
-    13260, 13889, 14197, 14182, 13847, 13197, 12242, 10998, 9489, 7747,
-    5812, 3731, 1555, -664, -2877, -5031, -7077, -8968, -10656, -12102,
-    -13274, -14143, -14691, -14909, -14792, -14339, -13557, -12466, -11097, -9492,
-    -7693, -5741, -3678, -1553, 579, 2664, 4648, 6483, 8128, 9548
-};
+// Bufor audio
+#define BUFFER_SIZE       2048
+int16_t tx_buffer[BUFFER_SIZE];
+
+// Zmienne syntezy
+volatile float current_freq = 0.0f; //aktualna f dzwieku
+float phase_pos = 0.0f; //obecna faza
+float volume = 8000.0f; //do glosnosci
+
+// Definicje nut
+#define NOTE_C4  261.63f
+#define NOTE_D4 293.66f
+#define NOTE_E4  329.63f
+#define NOTE_F4  349.99f
+#define NOTE_G4  392.00f
+#define NOTE_A4  440.00f
+#define NOTE_H4  493.88f
+#define NOTE_C5 523.25F
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,42 +87,103 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void CS43L22_Init(I2C_HandleTypeDef *hi2c) {
-    // 1. OBUDZENIE UKŁADU (HARDWARE RESET)
-    // Pin PE3 musi być w stanie WYSOKIM, żeby układ działał.
-    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
-    HAL_Delay(50); // Czekamy aż układ wstanie
-
     uint8_t txData[2];
 
-    // 2. POWER ON (Rejestr 0x02 -> 0x9E)
+    // Hardware reset
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
+    HAL_Delay(50); //reset na 50ms
+
+    // Power Down
     txData[0] = 0x02;
-    txData[1] = 0x9E;
+    txData[1] = 0x01; // Power down
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    // 3. WŁĄCZENIE WYJŚCIA SŁUCHAWKOWEGO I SYGNAŁU (Rejestr 0x04 -> 0xAF)
+    // Speaker OFF, Headpfones ON
     txData[0] = 0x04;
     txData[1] = 0xAF;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    // 4. KONFIGURACJA ZEGARA (AUTO-DETECT) (Rejestr 0x05 -> 0x81)
+    // Auto clock detect
     txData[0] = 0x05;
-    txData[1] = 0x81;
+    txData[1] = 0x81;//wlacza auto-detekcje zegara
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    // 5. USTAWIENIE GŁOŚNOŚCI (Rejestr 0x20 i 0x21 -> 0x18)
-    // Wartość 0x18 to przyzwoita głośność testowa. Max to 0x00 (+12dB), Min to 0xFF.
-    txData[0] = 0x20; txData[1] = 0x18; // Kanał A
+    // DISABLE analog inputs
+    txData[0] = 0x06;
+    txData[1] = 0x04; // Only DAC enabled
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 
-    txData[0] = 0x21; txData[1] = 0x18; // Kanał B
+    // Mute both channels on startup
+    txData[0] = 0x20; txData[1] = 0xFF;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+    txData[0] = 0x21; txData[1] = 0xFF;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+	//brak trzaskow na poczatku
+
+    HAL_Delay(10);
+
+    // POWER UP + DAC START (PLAY MODE)
+    txData[0] = 0x02;
+    txData[1] = 0x9E; // Playback ON + HP enabled
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+
+    HAL_Delay(100);
+
+    // Ustawienia glosnosci
+    txData[0] = 0x20; txData[1] = 0x18;
+    HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
+    txData[0] = 0x21; txData[1] = 0x18;
     HAL_I2C_Master_Transmit(hi2c, CS43L22_I2C_ADDR, txData, 2, HAL_MAX_DELAY);
 }
+
 
 int _write(int file, char *ptr, int len)
 {
     HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 50);
     return len;
 }
+// generacja probek sinusa do bufora
+
+void Fill_Sine_Buffer(int16_t *buffer, int num_samples) {
+    for (int i = 0; i < num_samples; i += 2) { // Krok co 2, bo stereo (L i R)
+        float sample_val = 0.0f;
+
+        if (current_freq > 0.0f) {
+            // Obliczenia wartosci sinusa  A * sin(faza)
+            sample_val = volume * sinf(phase_pos);
+
+            // Zwiekszenie fazy
+            phase_pos += (2.0f * PI * current_freq) / (float)SAMPLE_RATE;
+
+            // Zeijanie fazy w zakresie 0..2PI, zeby nie rosla w nieskonczonosc
+            if (phase_pos >= 2.0f * PI) {
+                phase_pos -= 2.0f * PI;
+            }
+        } else {
+            sample_val = 0.0f; // Cisza
+
+        }
+
+
+        buffer[i]     = (int16_t)sample_val; // Left
+        buffer[i + 1] = (int16_t)sample_val; // Right
+    }
+}
+
+// Callbacki DMA - wywolywane automatycznie, gdy SAI przesle polowe i calosc bufora
+// Dzięki temu dzwiek jest ciągly i plynny.
+
+void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
+
+    Fill_Sine_Buffer(&tx_buffer[0], BUFFER_SIZE / 2);
+}
+
+void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
+
+    Fill_Sine_Buffer(&tx_buffer[BUFFER_SIZE / 2], BUFFER_SIZE / 2);
+}
+//ping-pong caly bufor -> dac, po pierwszej polowie wywolany txhalf...
+//napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly
 /* USER CODE END 0 */
 
 /**
@@ -149,18 +222,24 @@ int main(void)
   MX_LCD_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  // Inicjalizujemy kodek audio (włączamy zasilanie na PE3 i konfigurujemy przez I2C)
-    CS43L22_Init(&hi2c1);
+  CS43L22_Init(&hi2c1);//inicjalizacja
 
-    // Uruchamiamy wysyłanie danych sinusoidy przez SAI (DMA) w pętli (Circular)
-    // "sine_wave" to nasze dane, "100" to liczba próbek w tablicy
-    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)sine_wave, 100) != HAL_OK)
+    // Wstępne wypełnienie bufora ciszą lub pierwszą nutą
+    Fill_Sine_Buffer(tx_buffer, BUFFER_SIZE);
+
+    // Start DMA w trybie CIRCULAr
+    if(HAL_SAI_Transmit_DMA(&hsai_BlockA1, (uint8_t*)tx_buffer, BUFFER_SIZE) != HAL_OK)
     {
-        Error_Handler(); // Jeśli tu wejdzie, coś jest nie tak z zegarami SAI lub DMA
+        Error_Handler();
     }
+<<<<<<< HEAD
   char tab_liter[]={'C','D','E','F','G','A','H'};
   uint8_t index=0;
   HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
+=======
+
+    HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
+>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -173,6 +252,7 @@ int main(void)
 
 	HAL_GPIO_TogglePin(LD_G_GPIO_Port, LD_G_Pin);
 	read_HCSR04();
+<<<<<<< HEAD
 	DisplayLetter(tab_liter[index]);
 	index=(index+1)%7;
 	HAL_Delay(500);
@@ -181,6 +261,52 @@ int main(void)
 
 
   }
+=======
+	HAL_Delay(200);
+	printf("Distance: %li\r\n", distance);//czesc asi
+
+	// --- ODTWARZANIE GAMY ---
+
+
+	    // C
+	    current_freq = NOTE_C4;
+	    HAL_Delay(500);
+
+	    // D
+	    current_freq = NOTE_D4;
+	    HAL_Delay(500);
+
+	    // E
+	    current_freq = NOTE_E4;
+	    HAL_Delay(500);
+
+	    // F
+	    current_freq = NOTE_F4;
+	    HAL_Delay(500);
+
+	    // G
+	    current_freq = NOTE_G4;
+	    HAL_Delay(500);
+
+	    // A
+	    current_freq = NOTE_A4;
+	    HAL_Delay(500);
+
+	    // H
+	    current_freq = NOTE_H4;
+	    HAL_Delay(500);
+
+	    current_freq = NOTE_C5;
+	   	    HAL_Delay(500);
+
+
+	    //current_freq = 0;
+	    //HAL_Delay(1000);
+	  
+	  }
+
+
+>>>>>>> 5f7130c3d8c57bc684bc235a55fc1d00f6fd25dc
   /* USER CODE END 3 */
 }
 
