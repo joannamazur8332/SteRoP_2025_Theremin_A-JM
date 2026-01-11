@@ -44,35 +44,67 @@
 #define SAMPLE_RATE       16000
 #define PI                3.14159265f
 // Definicje nut
+
+// 2oktawa
+#define NOTE_C2  65.41f
+#define NOTE_Cis2 69.30f
+#define NOTE_D2  73.42f
+#define NOTE_Dis2 77.78f
+#define NOTE_E2  82.41f
+#define NOTE_F2  87.31f
+#define NOTE_Fis2 92.50
+#define NOTE_G2  98.00f
+#define NOTE_Gis2 103.83
+#define NOTE_A2  110.00f
+#define NOTE_Ais2 116.54
+#define NOTE_H2  123.47f
 // 3 oktawa
 #define NOTE_C3  130.81f
+#define NOTE_Cis3 138.59f
 #define NOTE_D3  146.83f
+#define NOTE_Dis3 155.56f
 #define NOTE_E3  164.81f
 #define NOTE_F3  174.61f
+#define NOTE_Fis3 185.00f
 #define NOTE_G3  196.00f
+#define NOTE_Gis3 207.65
 #define NOTE_A3  220.00f
+#define NOTE_Ais3 233.08f
 #define NOTE_H3  246.94f
 // 4 oktawa
 #define NOTE_C4  261.63f
+#define NOTE_Cis4 277.18
 #define NOTE_D4 293.66f
+#define NOTE_Dis4 311.13f
 #define NOTE_E4  329.63f
 #define NOTE_F4  349.99f
+#define NOTE_Fis4 369.99f
 #define NOTE_G4  392.00f
+#define NOTE_Gis4 415.30f
 #define NOTE_A4  440.00f
+#define NOTE_Ais4 466.16f
 #define NOTE_H4  493.88f
 //5 oktawa
 #define NOTE_C5 523.25f
+#define NOTE_Cis5 554.37f
 #define NOTE_D5 587.33f
+#define NOTE_Dis5 622.25f
 #define NOTE_E5 659.25f
 #define NOTE_F5 698.46f
+#define NOTE_FIs5 739.99f
 #define NOTE_G5 783.99f
+#define NOTE_Gis5 830.61f
 #define NOTE_A5 880.00f
+#define NOTE_Ais5 932.33f
 #define NOTE_H5 987.77f
 //6 oktawa
 #define NOTE_C6 1046.50f
+
+
 //wybrana ilosc skali
-#define NUM_SCALES 3
+#define NUM_SCALES 4
 #define NUM_NOTES 8
+#define NUM_NOTES_PLUS 13
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -97,12 +129,20 @@ char tab_liter[]={'C','D','E','F','G','A','H', 'C'};
 
 float notes[NUM_SCALES][NUM_NOTES]={
 //inne skale
-{NOTE_C3,NOTE_D3 ,NOTE_E3, NOTE_F3 ,NOTE_G3 ,NOTE_A3, NOTE_H3, NOTE_C4},
-{ NOTE_C4,NOTE_D4 ,NOTE_E4, NOTE_F4 ,NOTE_G4 ,NOTE_A4, NOTE_H4, NOTE_C5},
-{NOTE_C5,NOTE_D5 ,NOTE_E5, NOTE_F5 ,NOTE_G5 ,NOTE_A5, NOTE_H5, NOTE_C6}
+		{NOTE_C2,NOTE_D2 ,NOTE_E2, NOTE_F2 ,NOTE_G2 ,NOTE_A2, NOTE_H2, NOTE_C3},
+		{NOTE_C3,NOTE_D3 ,NOTE_E3, NOTE_F3 ,NOTE_G3 ,NOTE_A3, NOTE_H3, NOTE_C4},
+		{ NOTE_C4,NOTE_D4 ,NOTE_E4, NOTE_F4 ,NOTE_G4 ,NOTE_A4, NOTE_H4, NOTE_C5},
+		{NOTE_C5,NOTE_D5 ,NOTE_E5, NOTE_F5 ,NOTE_G5 ,NOTE_A5, NOTE_H5, NOTE_C6}
 };
+float notesPlus[NUM_SCALES][NUM_NOTES_PLUS]={
+		{NOTE_C2,NOTE_Cis2, NOTE_D2, NOTE_Dis2,NOTE_E2, NOTE_F2 ,NOTE_G2, NOTE_Gis2,NOTE_A2,NOTE_Ais2, NOTE_H2, NOTE_C3},
+		{NOTE_C3,NOTE_Cis3, NOTE_D3, NOTE_Dis3,NOTE_E3, NOTE_F3 ,NOTE_G3, NOTE_Gis3,NOTE_A3,NOTE_Ais3, NOTE_H3, NOTE_C4},
+		{NOTE_C4,NOTE_Cis4, NOTE_D4, NOTE_Dis4,NOTE_E4, NOTE_F4 ,NOTE_G4, NOTE_Gis4,NOTE_A4,NOTE_Ais4, NOTE_H4, NOTE_C5},
+		{NOTE_C5,NOTE_Cis5, NOTE_D5, NOTE_Dis5,NOTE_E5, NOTE_F5 ,NOTE_G5, NOTE_Gis5,NOTE_A5,NOTE_Ais5, NOTE_H5, NOTE_C6}
+		};
 uint32_t min_distance=3;
 uint32_t max_distance=24;
+uint32_t max_distance_plus=39;
 uint32_t last_distance=0;
 int current_scale=0;
 volatile int autotune=1;
@@ -365,7 +405,7 @@ int main(void)
 	}
 	else{
 		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, SET);
-		current_freq = 0.0f;  //zatrzymanie dźwięku - pauza
+		current_freq = 0.0f; //zatrzymanie dźwięku - pauza
 	}
 
 
