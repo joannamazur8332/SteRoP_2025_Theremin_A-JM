@@ -104,7 +104,7 @@
 //wybrana ilosc skali
 #define NUM_SCALES 4
 #define NUM_NOTES 8
-#define NUM_NOTES_PLUS 13
+#define NUM_NOTES_PLUS 12
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -142,7 +142,7 @@ float notesPlus[NUM_SCALES][NUM_NOTES_PLUS]={
 		};
 uint32_t min_distance=3;
 uint32_t max_distance=24;
-uint32_t max_distance_plus=39;
+uint32_t max_distance_plus=36;
 uint32_t last_distance=0;
 int current_scale=0;
 volatile int autotune=1;
@@ -265,35 +265,45 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 //napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly
 
 
-void Autotune_play(int numer_skali){
-	if(numer_skali>NUM_SCALES || numer_skali<0)return;
-	if(abs(last_distance-distance)<3){
-		 distance = last_distance;
-	}
-	else{
-		last_distance = distance;
-	}
-	int index;
-	if(distance>max_distance)index=NUM_NOTES-1;
-	else if(distance<min_distance)index =0;
-	else index = (distance-min_distance)/3;
-	current_freq = notes[numer_skali][index];
-	DisplayLetter(tab_liter[index]);
+void Autotune_play(int numer_skali)
+{
+    if (numer_skali >= NUM_SCALES || numer_skali < 0) return;
+
+    if (abs(last_distance - distance) < 3) {
+        distance = last_distance;
+    } else {
+        last_distance = distance;
+    }
+
+    int index;
+
+    if (distance >= max_distance_plus)
+        index = NUM_NOTES_PLUS - 1;
+    else if (distance <= min_distance)
+        index = 0;
+    else
+        index = (distance - min_distance) *
+                (NUM_NOTES_PLUS - 1) /
+                (max_distance_plus - min_distance);
+
+    current_freq = notesPlus[numer_skali][index];
+    DisplayLetter(tab_liter[index]);
 }
 
 void play(int numer_skali){
 	if(numer_skali>NUM_SCALES || numer_skali<0)return;
-//	if(abs(last_distance-distance)<3){
-//		 distance = last_distance;
-//	}
-//	else{
-//		last_distance = distance;
-//	}
-	if(distance>max_distance) current_freq = notes[numer_skali][NUM_NOTES-1];
-	else if(distance<min_distance) current_freq = notes[numer_skali][0];
-	else{
-		 current_freq = notes[numer_skali][0] + (notes[numer_skali][NUM_NOTES-1] - notes[numer_skali][0]) * (distance - min_distance) / (float)(max_distance - min_distance);
-	}
+		if(abs(last_distance-distance)<3){
+			 distance = last_distance;
+		}
+		else{
+			last_distance = distance;
+		}
+		int index;
+		if(distance>max_distance)index=NUM_NOTES-1;
+		else if(distance<min_distance)index =0;
+		else index = (distance-min_distance)/3;
+		current_freq = notes[numer_skali][index];
+		DisplayLetter(tab_liter[index]);
 }
 
 
