@@ -71,7 +71,7 @@
 //6 oktawa
 #define NOTE_C6 1046.50f
 //wybrana ilosc skali
-#define NUM_SCALES 1
+#define NUM_SCALES 3
 #define NUM_NOTES 8
 /* USER CODE END PD */
 
@@ -365,7 +365,7 @@ int main(void)
 	}
 	else{
 		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, SET);
-		//zatrzymanie dźwięku - pauza
+		current_freq = 0.0f;  //zatrzymanie dźwięku - pauza
 	}
 
 
