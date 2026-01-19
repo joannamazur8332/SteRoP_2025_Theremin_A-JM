@@ -265,7 +265,7 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 //napidanie pierwszej polowy nowymi probkami i po drugiej druga -> dma caly czas wysyla dzwiek ciagly
 
 
-void Autotune_play(int numer_skali)
+void play(int numer_skali)
 {
     if (numer_skali >= NUM_SCALES || numer_skali < 0) return;
 
@@ -290,7 +290,7 @@ void Autotune_play(int numer_skali)
     DisplayLetter(tab_liter[index]);
 }
 
-void play(int numer_skali){
+void Autotune_play(int numer_skali){
 	if(numer_skali>NUM_SCALES || numer_skali<0)return;
 		if(abs(last_distance-distance)<3){
 			 distance = last_distance;
