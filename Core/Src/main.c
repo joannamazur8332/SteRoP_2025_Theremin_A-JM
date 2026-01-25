@@ -144,7 +144,7 @@ uint32_t min_distance=3;
 uint32_t max_distance=24;
 uint32_t max_distance_plus=36;
 uint32_t last_distance=0;
-int current_scale=0;
+int current_scale=2;
 volatile int autotune=1;
 volatile int state=0;
 /* USER CODE END PV */
@@ -159,6 +159,7 @@ void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai);
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai);
 void Autotune_play(int numer_skali);
 void play(int numer_skali);
+void PlusPlay(int numer_skali);
 void Gama(int numer_skali);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 /* USER CODE END PFP */
@@ -267,6 +268,32 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 
 void play(int numer_skali)
 {
+	if(numer_skali>NUM_SCALES || numer_skali<0)return;
+	if(distance>max_distance) current_freq = notes[numer_skali][NUM_NOTES-1];
+	else if(distance<min_distance) current_freq = notes[numer_skali][0];
+	else{
+		 current_freq = notes[numer_skali][0] + (notes[numer_skali][NUM_NOTES-1] - notes[numer_skali][0]) * (distance - min_distance) / (float)(max_distance - min_distance);
+	}
+	 HAL_LCD_Clear(&hlcd);
+}
+
+void Autotune_play(int numer_skali){
+	if(numer_skali>NUM_SCALES || numer_skali<0)return;
+	if(abs(last_distance-distance)<3){
+		 distance = last_distance;
+	}
+	else{
+		last_distance = distance;
+	}
+	int index;
+	if(distance>max_distance)index=NUM_NOTES-1;
+	else if(distance<min_distance)index =0;
+	else index = (distance-min_distance)/3;
+	current_freq = notes[numer_skali][index];
+	DisplayLetter(tab_liter[index]);
+}
+
+void PlusPlay(int numer_skali){
     if (numer_skali >= NUM_SCALES || numer_skali < 0) return;
     if (abs(last_distance - distance) < 3) {
         distance = last_distance;
@@ -287,22 +314,6 @@ void play(int numer_skali)
 
     current_freq = notesPlus[numer_skali][index];
     HAL_LCD_Clear(&hlcd);
-}
-
-void Autotune_play(int numer_skali){
-	if(numer_skali>NUM_SCALES || numer_skali<0)return;
-	if(abs(last_distance-distance)<3){
-		 distance = last_distance;
-	}
-	else{
-		last_distance = distance;
-	}
-	int index;
-	if(distance>max_distance)index=NUM_NOTES-1;
-	else if(distance<min_distance)index =0;
-	else index = (distance-min_distance)/3;
-	current_freq = notes[numer_skali][index];
-	DisplayLetter(tab_liter[index]);
 }
 
 
@@ -329,10 +340,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		}
 	}
 	else if(GPIO_Pin == JOY_Right_Pin){
-		autotune=1;
+		if(autotune<2)autotune++;
 	}
 	else if(GPIO_Pin == JOY_Left_Pin){
-		autotune=0;
+		if(autotune>0) autotune-=1;
 	}
 
 }
@@ -406,10 +417,15 @@ int main(void)
 		}
 
 		printf("Distance: %li\r\n", distance);
-		if(autotune){
+		if(autotune==1){
 			Autotune_play(current_scale);
 		}
-		else play(current_scale);
+		else if(autotune==2){
+			PlusPlay(current_scale);
+		}
+		else{
+			play(current_scale);
+		}
 		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, RESET);
 	}
 	else{
