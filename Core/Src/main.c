@@ -286,7 +286,7 @@ void play(int numer_skali)
                 (max_distance_plus - min_distance);
 
     current_freq = notesPlus[numer_skali][index];
-    DisplayLetter(tab_liter[index]);
+    HAL_LCD_Clear(&hlcd);
 }
 
 void Autotune_play(int numer_skali){
@@ -319,7 +319,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		state = !state;
 	}
 	else if(GPIO_Pin == JOY_Up_Pin){
-		if(current_scale<NUM_SCALES){
+		if(current_scale<NUM_SCALES-1){
 			current_scale++;
 		}
 	}
